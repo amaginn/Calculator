@@ -1,8 +1,12 @@
+// FINISH DELETING ONE NUMBER AT A TIME FROM DISPLAY
+
 // array for nums on Display
 let numsArray = [];
 
 // results Array
 let resultsArray = [];
+
+let numString2 = "";
 
 // indexes for operators
 let operate = function() {
@@ -79,6 +83,7 @@ const addToDisplay = function(e) {
         numsArray.push(newNum);
         console.log("numsArray:", numsArray);
         let numString2 = numsArray.toString().replace(/,/g,'');
+        console.log('DISPLAY:',numString2)
         topDisplay.innerText = numString2;
    }
 }
@@ -96,6 +101,8 @@ clearBtn.addEventListener('click', clearDisplay);
 
 // function for deleting one number
 const deleteNum = function () {
+    numString2.slice(0, numString2.length - 1)
+    console.log('numString2:', numString2);
     numsArray.pop();
     console.log(numsArray)
 }
