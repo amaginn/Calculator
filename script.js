@@ -1,5 +1,3 @@
-// FINISH DELETING ONE NUMBER AT A TIME FROM DISPLAY
-
 // array for nums on Display
 let numsArray = [];
 
@@ -72,6 +70,8 @@ const numbers = {
 
 // add DOM listeners
 let display = document.querySelector('#display');
+let topDisplay = document.querySelector('#topDisplay')
+let botDisplay = document.querySelector('#botDisplay')
 let clearBtn = document.querySelector('#clearBtn');
 let deleteBtn = document.querySelector('#deleteBtn');
 let btnContainer = document.querySelector('#buttons-grid');
@@ -82,11 +82,13 @@ const addToDisplay = function(e) {
         let newNum = e.target.innerText;
         numsArray.push(newNum);
         console.log("numsArray:", numsArray);
-        let numString2 = numsArray.toString().replace(/,/g,'');
+        numString2 = numsArray.toString().replace(/,/g,'');
         console.log('DISPLAY:',numString2)
         topDisplay.innerText = numString2;
    }
+   return numString2;
 }
+
 btnContainer.addEventListener('click', addToDisplay);
 
 // function for clearing display and both arrays
@@ -99,12 +101,13 @@ const clearDisplay = function() {
 }
 clearBtn.addEventListener('click', clearDisplay);
 
-// function for deleting one number
+// function for deleting one number in the array and display
 const deleteNum = function () {
-    numString2.slice(0, numString2.length - 1)
+    numString2 = numString2.slice(0, numString2.length - 1)
     console.log('numString2:', numString2);
     numsArray.pop();
     console.log(numsArray)
+    topDisplay.innerText = numString2;
 }
 deleteBtn.addEventListener('click', deleteNum);
 
