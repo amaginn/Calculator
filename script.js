@@ -30,14 +30,14 @@ const indexOfMulti = numsArray.indexOf('×');
 const indexOfDivi = numsArray.indexOf('÷');
 
 const numbers = {
-    add1: parseInt(numsArray.filter((num, index) => index < indexOfPlus && typeof num === "string").join('')),
-    add2: parseInt(numsArray.filter((num, index) => index > indexOfPlus && typeof num === "string").join('')),
-    sub1: parseInt(numsArray.filter((num, index) => index < indexOfMinus && typeof num === "string").join('')),
-    sub2: parseInt(numsArray.filter((num, index) => index > indexOfMinus && typeof num === "string").join('')),
-    mult1: parseInt(numsArray.filter((num, index) => index < indexOfMulti && typeof num === "string").join('')),
-    mult2: parseInt(numsArray.filter((num, index) => index > indexOfMulti && typeof num === "string").join('')),
-    divi1: parseInt(numsArray.filter((num, index) => index < indexOfDivi && typeof num === "string").join('')),
-    divi2: parseInt(numsArray.filter((num, index) => index > indexOfDivi && typeof num === "string").join(''))
+    add1: parseFloat(numsArray.filter((num, index) => index < indexOfPlus && typeof num === "string").join('')),
+    add2: parseFloat(numsArray.filter((num, index) => index > indexOfPlus && typeof num === "string").join('')),
+    sub1: parseFloat(numsArray.filter((num, index) => index < indexOfMinus && typeof num === "string").join('')),
+    sub2: parseFloat(numsArray.filter((num, index) => index > indexOfMinus && typeof num === "string").join('')),
+    mult1: parseFloat(numsArray.filter((num, index) => index < indexOfMulti && typeof num === "string").join('')),
+    mult2: parseFloat(numsArray.filter((num, index) => index > indexOfMulti && typeof num === "string").join('')),
+    divi1: parseFloat(numsArray.filter((num, index) => index < indexOfDivi && typeof num === "string").join('')),
+    divi2: parseFloat(numsArray.filter((num, index) => index > indexOfDivi && typeof num === "string").join(''))
 };
 
 // actually operate on numbers
