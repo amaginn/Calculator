@@ -1,27 +1,14 @@
-// array for nums on Display
 let numsArray = [];
-
-// results Array
 let resultsArray = [];
+let displayNum = "";
 
-let numString2 = "";
-
-// indexes for operators
 let operate = function() {
   
 const operations = {
-    add: function(num1, num2) {
-        return num1 + num2;
-    },
-    subtract: function(num1, num2) {
-        return num1 - num2;
-    },
-    multiply: function(num1, num2) {
-        return num1 * num2;
-    },
-    divide: function(num1, num2) {
-        return num1 / num2;
-    }
+    add: (num1, num2) => num1 + num2,
+    subtract: (num1, num2) => num1 - num2,
+    multiply: (num1, num2) => num1 * num2,
+    divide: (num1, num2) => num1 / num2,
 };
   
 const indexOfPlus = numsArray.indexOf('+');
@@ -40,58 +27,45 @@ const numbers = {
     divi2: parseFloat(numsArray.filter((num, index) => index > indexOfDivi && typeof num === "string").join(''))
 };
 
-// actually operate on numbers
     if (numsArray.includes('+')) {
         let add1 = operations.add(numbers.add1, numbers.add2);
-        console.log('Add funtion:', add1)
-        console.log('numsArray BEFORE operation:', numsArray)
-        console.log('resultsArray BEFORE operation:', resultsArray)
         botDisplay.innerText = add1;
         resultsArray[0] = add1.toString();
-        // buttonsGrid.disabled = true;
     } if (numsArray.includes('-')) {
         let sub1 = operations.subtract(numbers.sub1, numbers.sub2);
-        console.log('SUBTRACT:', sub1);
         botDisplay.innerText = sub1;
         resultsArray[0] = sub1;
     } if (numsArray.includes('×')) {
         let mult1 = operations.multiply(numbers.mult1, numbers.mult2);
-        console.log('MULTIPLY:', mult1);
         botDisplay.innerText = mult1;
         resultsArray[0] = mult1;
     } if (numsArray.includes('÷')) {
         let divi1 = operations.divide(numbers.divi1, numbers.divi2);
-        console.log('DIVIDE:', divi1)
         botDisplay.innerText = divi1;
         resultsArray[0] = divi1;
     } else  
         return 'Please enter a valid operator'
 }
 
-// add DOM listeners
 let display = document.querySelector('#display');
 let topDisplay = document.querySelector('#topDisplay')
 let botDisplay = document.querySelector('#botDisplay')
 let clearBtn = document.querySelector('#clearBtn');
 let deleteBtn = document.querySelector('#deleteBtn');
 let btnContainer = document.querySelector('#buttons-grid');
+let equalsBtn = document.querySelector('#equalsBtn');
 
-// function for displaying clicked numbers
 const addToDisplay = function(e) {
         if (e.target.classList.contains('btn')) {
         let newNum = e.target.innerText;
         numsArray.push(newNum);
-        console.log("numsArray:", numsArray);
-        numString2 = numsArray.toString().replace(/,/g,'');
-        console.log('DISPLAY:',numString2)
-        topDisplay.innerText = numString2;
+        displayNum = numsArray.toString().replace(/,/g,'');
+        topDisplay.innerText = displayNum;
    }
-   return numString2;
+   return displayNum;
 }
-
 btnContainer.addEventListener('click', addToDisplay);
 
-// function for clearing display and both arrays
 const clearDisplay = function() {
     topDisplay.innerText = '0'
     botDisplay.innerText = ''
@@ -101,24 +75,17 @@ const clearDisplay = function() {
 }
 clearBtn.addEventListener('click', clearDisplay);
 
-// function for deleting one number in the array and display
 const deleteNum = function () {
-    numString2 = numString2.slice(0, numString2.length - 1)
-    console.log('numString2:', numString2);
+    displayNum = displayNum.slice(0, displayNum.length - 1);
     numsArray.pop();
-    console.log(numsArray)
-    topDisplay.innerText = numString2;
+    topDisplay.innerText = displayNum;
 }
 deleteBtn.addEventListener('click', deleteNum);
 
 const clearNumsArray = function() {
-   numsArray.length = 0
-   numsArray.push(resultsArray[0].toString())
-    console.log('resultsArray AFTER operation:', resultsArray);
-    console.log('numsArray AFTER operation:', numsArray)
+   numsArray = [resultsArray[0].toString()];
 }
-// add = return event listener
-let equalsBtn = document.querySelector('#equalsBtn')
+
 equalsBtn.addEventListener('click', function() {
     operate();
     clearNumsArray();
