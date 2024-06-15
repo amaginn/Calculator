@@ -1,52 +1,12 @@
+// arrays for appending clicks, key downs, and opearations
 let numsArray = [];
 let resultsArray = [];
 let displayNum = "";
 
-let operate = function() {
-  
-const operations = {
-    add: (num1, num2) => num1 + num2,
-    subtract: (num1, num2) => num1 - num2,
-    multiply: (num1, num2) => num1 * num2,
-    divide: (num1, num2) => num1 / num2,
-};
-  
-const indexOfPlus = numsArray.indexOf('+');
-const indexOfMinus = numsArray.indexOf('-');
-const indexOfMulti = numsArray.indexOf('×');
-const indexOfDivi = numsArray.indexOf('÷');
+// Operators for calculations
+const operators = ['+', '-', '×', '÷'];
 
-const numbers = {
-    add1: parseFloat(numsArray.filter((num, index) => index < indexOfPlus && typeof num === "string").join('')),
-    add2: parseFloat(numsArray.filter((num, index) => index > indexOfPlus && typeof num === "string").join('')),
-    sub1: parseFloat(numsArray.filter((num, index) => index < indexOfMinus && typeof num === "string").join('')),
-    sub2: parseFloat(numsArray.filter((num, index) => index > indexOfMinus && typeof num === "string").join('')),
-    mult1: parseFloat(numsArray.filter((num, index) => index < indexOfMulti && typeof num === "string").join('')),
-    mult2: parseFloat(numsArray.filter((num, index) => index > indexOfMulti && typeof num === "string").join('')),
-    divi1: parseFloat(numsArray.filter((num, index) => index < indexOfDivi && typeof num === "string").join('')),
-    divi2: parseFloat(numsArray.filter((num, index) => index > indexOfDivi && typeof num === "string").join(''))
-};
-
-    if (numsArray.includes('+')) {
-        let add1 = operations.add(numbers.add1, numbers.add2);
-        botDisplay.innerText = add1;
-        resultsArray[0] = add1.toString();
-    } if (numsArray.includes('-')) {
-        let sub1 = operations.subtract(numbers.sub1, numbers.sub2);
-        botDisplay.innerText = sub1;
-        resultsArray[0] = sub1;
-    } if (numsArray.includes('×')) {
-        let mult1 = operations.multiply(numbers.mult1, numbers.mult2);
-        botDisplay.innerText = mult1;
-        resultsArray[0] = mult1;
-    } if (numsArray.includes('÷')) {
-        let divi1 = operations.divide(numbers.divi1, numbers.divi2);
-        botDisplay.innerText = divi1;
-        resultsArray[0] = divi1;
-    } else  
-        return 'Please enter a valid operator'
-}
-
+// DOM elements
 let display = document.querySelector('#display');
 let topDisplay = document.querySelector('#topDisplay')
 let botDisplay = document.querySelector('#botDisplay')
@@ -55,39 +15,103 @@ let deleteBtn = document.querySelector('#deleteBtn');
 let btnContainer = document.querySelector('#buttons-grid');
 let equalsBtn = document.querySelector('#equalsBtn');
 
-const addToDisplay = function(e) {
+// grab the operator in the numsArray
+const indexOfOperator = (operator) => numsArray.indexOf(operator);
+
+// grab the numbers in the numsArray
+const numbers = (operatorIndex) => {
+    const num1 = parseFloat(numsArray.slice(0, operatorIndex).join(''));
+    const num2 = parseFloat(numsArray.slice(operatorIndex + 1).join(''));
+    return [num1, num2];
+}
+
+// actual calculations 
+const performOperation = (operator, num1, num2) => {
+    const operations = {
+        '+': (a, b) => a + b,
+        '-': (a, b) => a - b,
+        '×': (a, b) => a * b,
+        '÷': (a, b) => a / b,
+    };
+    return operations[operator](num1, num2);
+}
+
+// perform the operation with the selected numbers and operators
+let operate = function() {
+    let result;
+
+    for (let operator of operators) {
+        const index = indexOfOperator(operator);
+        if (index !== -1) {
+            const [num1, num2] = numbers(index);
+            result = performOperation(operator, num1, num2);
+            break;
+        }
+    }
+
+    if (result !== undefined) {
+        botDisplay.innerText = result;
+        resultsArray[0] = result.toString();
+        return result;
+    } else {
+        return 'Please enter a valid operator';
+    }
+}
+
+// add the selected numbers and operators to the display
+const addToDisplay = (e) => {
         if (e.target.classList.contains('btn')) {
-        let newNum = e.target.innerText;
-        numsArray.push(newNum);
-        displayNum = numsArray.toString().replace(/,/g,'');
-        topDisplay.innerText = displayNum;
+            let newNum = e.target.innerText;
+            numsArray.push(newNum);
+            displayNum = numsArray.join('');
+            topDisplay.innerText = displayNum;
    }
    return displayNum;
-}
-btnContainer.addEventListener('click', addToDisplay);
+};
 
-const clearDisplay = function() {
+// clear button
+const clearDisplay = () => {
     topDisplay.innerText = '0'
     botDisplay.innerText = ''
     numsArray.length = 0
     resultsArray.length = 0
     deleteBtn.disabled = false;
 }
-clearBtn.addEventListener('click', clearDisplay);
 
-const deleteNum = function () {
+// delete button
+const deleteNum = () => {
     displayNum = displayNum.slice(0, displayNum.length - 1);
     numsArray.pop();
     topDisplay.innerText = displayNum;
 }
-deleteBtn.addEventListener('click', deleteNum);
 
+// clears underlying array
 const clearNumsArray = function() {
    numsArray = [resultsArray[0].toString()];
 }
 
-equalsBtn.addEventListener('click', function() {
+// attached to equals button (combines operate with clearing the underlying array to avoid issues)
+const finalOperation = function() {
     operate();
     clearNumsArray();
     deleteBtn.disabled = true;
-});
+}
+
+// using the keyboard to select numbers, operators, delete, clear, and operate
+const keyboardToDisplay = function(e) {
+    if (e.key >= 0 && e.key <= 9 || e.key === '.' || operators.includes(e.key)) {
+        let newNum = e.key;
+        numsArray.push(newNum);
+        displayNum = numsArray.toString().replace(/,/g,'');
+        topDisplay.innerText = displayNum;
+}    if (e.key === 'Backspace') deleteNum()
+     if (e.key === 'Escape') clearDisplay()
+     if (e.key === '=' || e.key === 'Enter') finalOperation()
+}
+
+// event listeners
+btnContainer.addEventListener('click', addToDisplay);
+clearBtn.addEventListener('click', clearDisplay);
+deleteBtn.addEventListener('click', deleteNum);
+equalsBtn.addEventListener('click', finalOperation);
+window.addEventListener('keydown', keyboardToDisplay);
