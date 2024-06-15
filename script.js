@@ -99,10 +99,20 @@ const finalOperation = function() {
 
 // using the keyboard to select numbers, operators, delete, clear, and operate
 const keyboardToDisplay = function(e) {
-    if (e.key >= 0 && e.key <= 9 || e.key === '.' || operators.includes(e.key)) {
+    if (e.key >= 0 && e.key <= 9 || e.key === '.' || e.key === '+' || e.key === '-') {
         let newNum = e.key;
         numsArray.push(newNum);
-        displayNum = numsArray.toString().replace(/,/g,'');
+        displayNum = numsArray.join('');
+        topDisplay.innerText = displayNum;
+}    if (e.key === 'x') {
+        let newNum = '×';
+        numsArray.push(newNum);
+        displayNum = numsArray.join('');
+        topDisplay.innerText = displayNum;
+}    if (e.key === '/') {
+        let newNum = '÷';
+        numsArray.push(newNum);
+        displayNum = numsArray.join('');
         topDisplay.innerText = displayNum;
 }    if (e.key === 'Backspace') deleteNum()
      if (e.key === 'Escape') clearDisplay()
