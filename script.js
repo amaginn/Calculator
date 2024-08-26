@@ -125,3 +125,9 @@ clearBtn.addEventListener('click', clearDisplay);
 deleteBtn.addEventListener('click', deleteNum);
 equalsBtn.addEventListener('click', finalOperation);
 window.addEventListener('keydown', keyboardToDisplay);
+
+// THIS IS A TEST MAN
+
+const testing = () => {
+
+}
